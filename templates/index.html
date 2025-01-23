@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compression project</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <!-- Navigation Tabs -->
+    <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="pills-intro-tab" data-bs-toggle="pill" data-bs-target="#pills-intro" type="button" role="tab" aria-controls="pills-home" aria-selected="true" >Introduction</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-rle-tab" data-bs-toggle="pill" data-bs-target="#pills-rle" type="button" role="tab" aria-controls="pills-profile" aria-selected="false" >Run Length Coding</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-arth-tab" data-bs-toggle="pill" data-bs-target="#pills-arth" type="button" role="tab" aria-controls="pills-contact" aria-selected="false" >Arithmetic Coding</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="pills-huff-tab" data-bs-toggle="pill" data-bs-target="#pills-huff" type="button" role="tab" aria-controls="pills-disabled" aria-selected="false" >Huffman coding</button>
+        </li>
+    </ul>
+
+    <!-- Tab Content -->
+    <div class="tab-content" id="pills-tabContent">
+        <!-- Introduction Tab -->
+        <div class="tab-pane fade show active" id="pills-intro" role="tabpanel" aria-labelledby="pills-intro-tab" tabindex="0">
+            <div>
+                <h1>Data Compression:</h1>
+                <p>Data compression is the process of reducing the size of data without losing its essential information.<br>
+                The main goal of data compression is to save storage space and reduce the time required to transmit data between systems or over networks.</p>
+                <hr>
+                <h4>Compression techniques are widely used in various applications, such as:</h4>
+                <ul>
+                    <li>Reducing the size of text files, images, and videos.</li>
+                    <li>Improving the efficiency of data transmission over the internet and communication systems.</li>
+                    <li>Speeding up storage and retrieval processes.</li>
+                </ul>
+                <hr>
+                <h4>Data compression types:</h4>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead class="table-primary">
+                            <tr>
+                                <th></th>
+                                <th>Lossless Compression</th>
+                                <th>Lossy Compression</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Definition</td>
+                                <td>No data is lost during compression.</td>
+                                <td>Some non-essential data is removed.</td>
+                            </tr>
+                            <tr>
+                                <td>Data Recovery</td>
+                                <td>Original data can be perfectly restored.</td>
+                                <td>Original data cannot be perfectly restored.</td>
+                            </tr>
+                            <tr>
+                                <td>Quality</td>
+                                <td>No loss in quality.</td>
+                                <td>Slight reduction in quality.</td>
+                            </tr>
+                            <tr>
+                                <td>File Types</td>
+                                <td>Text, software, databases, and critical data.</td>
+                                <td>Images, audio, and video files.</td>
+                            </tr>
+                            <tr>
+                                <td>Compression Ratio</td>
+                                <td>Lower (less space saved).</td>
+                                <td>Higher (more space saved).</td>
+                            </tr>
+                            <tr>
+                                <td>Common Algorithms</td>
+                                <td>Run Length Encoding (RLE), Huffman Coding, LZW.</td>
+                                <td>JPEG, MP3, MPEG, and MP4.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Run-Length Coding Tab -->
+        <div class="tab-pane fade" id="pills-rle" role="tabpanel" aria-labelledby="pills-rle-tab" tabindex="0">
+            <div>
+                <h3>Run-Length Encoding</h3>
+                <p>RLE is a simple and widely used compression algorithm. It is particularly effective for data with long sequences of repeated characters.</p>
+                <hr>
+                <h4>Time and Space Complexity:</h4>
+                <ul>
+                    <li>Time Complexity: O(n), where n is the length of the input string.</li>
+                    <li>Space Complexity: O(1), for storing the compressed output.</li>
+                </ul>
+                <hr>
+                <h4>Problem Understanding:</h4>
+                <p>The goal of Run-Length Encoding is to compress a string by replacing sequences of repeated characters with a single character followed by the number of times it's repeated.</p>
+                <hr>
+                <h4>Approach:</h4>
+                <ul>
+                    <li>Initialize an empty array</li>
+                    <li>Loop through the input string and count the number of occurrences of each character.</li>
+                    <li>If the count exceeds 9 : <br> - split it into groups of 9 and append the character followed by the count to the array.</li>
+                    <li>If the count 9 or less : <br> - directly append the character followed by the count to the array.</li>
+                    <li>Join the elements of the array into a single string and return the encoded string.</li>
+                </ul>
+                <img src="{{ url_for('static', filename='RLE.png') }}" style="margin-left: 330px;">
+                <hr>
+                <h4>Let's try it:</h4>
+                <div class="mb-3">
+                    <label for="formGroupExampleInput" class="form-label">Enter a string</label>
+                    <input type="text" id="rleUserInput" class="form-control col-6" placeholder="e.g., AAAAABBBCCAAA"/>
+                    <button class="btn btn-primary mt-3" onclick="compressString()" style="background-color:rgb(189, 135, 250) !important; border:rgb(55, 0, 73) !important;">Compress</button>
+                    <h4 class="mt-4">Compressed Output:</h4>
+                    <p id="output" style="font-weight: bold;"></p>
+                </div>
+                <hr>
+                <h4 class="mt-5">Enter a compressed string to decompress:</h4>
+            <div class="mb-3">
+                <label for="decompressInput" class="form-label">Compressed String</label>
+                <input type="text" id="decompressInput" class="form-control col-6" placeholder="e.g., A:11 V:7 W:4"/>
+                <button class="btn btn-primary mt-3" onclick="decompressString()" style="background-color:rgb(189, 135, 250) !important; border:rgb(55, 0, 73) !important;">Decompress</button>
+                <h4 class="mt-4">Decompressed Output:</h4>
+                <p id="decompressedOutput" style="font-weight: bold;"></p>
+            </div>
+            </div>
+        </div>
+
+        <!-- Arithmetic Coding Tab -->
+        <div class="tab-pane fade" id="pills-arth" role="tabpanel" aria-labelledby="pills-arth-tab" tabindex="0">
+            <div>
+                <h3>Arithmetic Coding</h3>
+                <p>
+                    Arithmetic Coding is a variable-length entropy coding technique used in data compression. 
+                    It represents the entire message as a single fractional number between 0 and 1.
+                </p>
+                <hr>
+                <h4>Time and Space Complexity:</h4>
+                <ul>
+                    <li>Time Complexity: O(n), where n is the length of the input string.</li>
+                    <li>Space Complexity: O(1), for storing the compressed output.</li>
+                </ul>
+                <hr>
+                <h4>Problem Understanding:</h4>
+                <p>
+                    The goal of Arithmetic Coding is to compress a string by representing the probabilities of each character as a fractional number between 0 and 1.
+                </p>
+                <hr>
+                <h4>Approach:</h4>
+                <ul>
+                    <li>Initialize an empty range [0, 1) to represent the entire probability space.</li>
+                    <li>Loop through each symbol in the input string.</li>
+                    <li>For each symbol, adjust the range based on the probability distribution:
+                        <br> - Use the symbol's cumulative probability range to divide the current range.
+                    </li>
+                    <li>After processing all symbols, select a fractional value within the final range, representing the encoded string.</li>
+                    <li>Return the fractional value as the encoded result.</li>
+                </ul>
+                <img src="{{ url_for('static', filename='Arithmetic.png') }}" style="margin-left: 330px;">
+                <hr>
+                <h4>Let's try it:</h4>
+                <div class="mb-3">
+                    <label for="probabilitiesInput" class="form-label">Enter Probabilities</label>
+                    <p style="color:red;">Format: {"a": 0.2, "b": 0.5, "c": 0.3}</p>
+                    <input type="text" id="probabilitiesInput" class="form-control col-6" placeholder='e.g., {"a": 0.2, "b": 0.5, "c": 0.3}' />
+                    
+                    <label for="inputString" class="form-label mt-3">Input String</label>
+                    <input type="text" id="inputString" class="form-control col-6" placeholder="e.g., abc" />
+                    
+                    <button class="btn btn-primary mt-3" onclick="encodeArithmetic()">Encode</button>
+                    <h4 class="mt-4">Encoded Output:</h4>
+                    <p id="encodedOutput" style="font-weight: bold;"></p>
+                </div>
+        
+                <hr>
+                
+                <div class="mb-3">
+                    <label for="decodeProbabilitiesInput" class="form-label">Enter Probabilities</label>
+                    <p style="color:red;">Format: {"a": 0.2, "b": 0.5, "c": 0.3}</p>
+                    <input type="text" id="decodeProbabilitiesInput" class="form-control col-6" placeholder='e.g., {"a": 0.2, "b": 0.5, "c": 0.3}' />
+                    
+                    <label for="fractionalValue" class="form-label mt-3">Fractional Value</label>
+                    <input type="text" id="fractionalValue" class="form-control col-6" placeholder="e.g., 0.123456" />
+                    
+                    <label for="textLength" class="form-label mt-3">Length of Text</label>
+                    <input type="text" id="textLength" class="form-control col-6" placeholder="e.g., 3" />
+                    
+                    <button class="btn btn-primary mt-3" onclick="decodeArithmetic()">Decode</button>
+                    <h4 class="mt-4">Decoded Output:</h4>
+                    <p id="decodedOutput" style="font-weight: bold;"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Huffman Coding Tab -->
+        <div class="tab-pane fade" id="pills-huff" role="tabpanel" aria-labelledby="pills-huff-tab" tabindex="0">
+            <div>
+                <h3> Huffman Compression</h3>
+                <p>
+                    Huffman coding uses shorter codes for frequent letters and longer ones for uncommon letters.
+                    Through the employment of the binary tree, called the Huffman tree.
+                </p>
+                <hr>
+                <h4>Time and Space Complexity:</h4>
+                <ul>
+                    <li>Time Complexity: O(n log n), where n is the length of the input string.</li>
+                    <li>Space Complexity: O(k), as it requires space for the dictionary and output data.</li>
+                </ul>
+                <hr>
+                <h4>Problem Understanding:</h4>
+                <p>Huffman compression works by building a binary tree of sequences that appear in the input data. Each sequence is assigned a unique code, and repetitive sequences are replaced with their corresponding codes.</p>
+                <hr>
+                <h4>Approach:</h4>
+                <ul>
+                    <li>Initialize a priority queue with all single-character sequences.</li>
+                    <li>Build the Huffman tree by combining the two least frequent sequences.</li>
+                    <li>Generate Huffman codes by traversing the tree.</li>
+                    <li>Replace repeated sequences with their corresponding codes from the tree.</li>
+                </ul>
+                <img src="{{ url_for('static', filename='huffman-removebg-preview.png') }}" style="margin-left: 330px;">
+                <hr>
+                <h4>Let's try it:</h4>
+                <div class="mb-3">
+                    <label for="huffmanInput" class="form-label">Enter Text</label>
+                    <input type="text" id="huffmanInput" class="form-control col-6" placeholder="e.g., aabbcc" />
+                    
+                    <button class="btn btn-primary mt-3" onclick="encodeHuffman()">Encode</button>
+                    <h4 class="mt-4">Encoded Output:</h4>
+                    <p id="huffmanEncodedOutput" style="font-weight: bold;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script>
+        function compressString() {
+            const rleInputString = document.getElementById("rleUserInput").value;
+        
+            if (rleInputString.trim() === "") {
+                document.getElementById("output").innerText = "Please enter a valid string!";
+                return;
+            }
+        
+            fetch('/compress', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ input_string: rleInputString })  // Corrected variable name
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.compressed) {
+                    document.getElementById("output").innerText = data.compressed;
+                } else {
+                    document.getElementById("output").innerText = "Error: " + data.error;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+        
+
+        function decompressString() {
+            const compressedString = document.getElementById("decompressInput").value.trim();
+            
+            // Ensure input is not empty
+            if (compressedString === "") {
+                document.getElementById("decompressedOutput").innerText = "Please enter a valid compressed string!";
+                return;
+            }
+            
+           
+            fetch('/decompress', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ input_string: compressedString })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.decompressed) {
+                    document.getElementById("decompressedOutput").innerText = data.decompressed;
+                } else {
+                    document.getElementById("decompressedOutput").innerText = "Error: " + data.error;
+                }
+            })
+            .catch(error => {
+                console.error("Decompression error:", error);
+                document.getElementById("decompressedOutput").innerText = "An error occurred: " + error;
+            });
+        }
+        document.querySelectorAll('.nav-link').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.getElementById('output').innerText = '';
+                document.getElementById('decompressedOutput').innerText = '';
+            });
+        });
+        <!--Arithmetic Coding-->
+        async function encodeArithmetic() {
+            const probabilitiesInput = document.getElementById("probabilitiesInput").value;
+            const inputString = document.getElementById("inputString").value;
+        
+            try {
+                const probabilities = JSON.parse(probabilitiesInput); // Parse JSON safely
+        
+                const response = await fetch("/encode", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        input_string: inputString,
+                        probabilities: probabilities,
+                    }),
+                });
+        
+                if (!response.ok) {
+                    throw new Error("Failed to encode. Please check your input.");
+                }
+        
+                const data = await response.json();
+                document.getElementById("encodedOutput").textContent = data.encoded_value || "No encoded value returned.";
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+        
+        // Decoding Function
+        async function decodeArithmetic() {
+            const probabilitiesInput = document.getElementById("decodeProbabilitiesInput").value;
+            const fractionalValue = parseFloat(document.getElementById("fractionalValue").value);
+            const textLength = parseInt(document.getElementById("textLength").value);
+        
+            try {
+                const probabilities = JSON.parse(probabilitiesInput); // Parse JSON safely
+        
+                const response = await fetch("/decode", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        encoded_value: fractionalValue,
+                        probabilities: probabilities,
+                        length: textLength,
+                    }),
+                });
+        
+                if (!response.ok) {
+                    throw new Error("Failed to decode. Please check your input.");
+                }
+        
+                const data = await response.json();
+                document.getElementById("decodedOutput").textContent = data.decoded_string || "No decoded string returned.";
+            } catch (error) {
+                alert(`Error: ${error.message}`);
+            }
+        }
+       
+        async function encodeHuffman() {
+            const text = document.getElementById("huffmanInput").value.trim();
+
+            if (!text) {
+                alert("Please enter text to encode.");
+                return;
+            }
+
+            try {
+                const response = await fetch("/huffman/encode", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ text }),
+                });
+
+                const data = await response.json();
+
+                if (data.encoded && data.tree) {
+                    document.getElementById("huffmanEncodedOutput").innerText = `Encoded Text: ${data.encoded}\nHuffman Tree: ${JSON.stringify(data.tree)}`;
+                } else {
+                    alert("Failed to encode. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error encoding Huffman:", error);
+            }
+        }
+
+    </script>
+</body>
+</html>

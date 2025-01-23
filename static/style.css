@@ -1,0 +1,62 @@
+body, html {
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box;
+    height: 100%; /* Optional */
+}
+body {
+    margin: 20px !important;
+    background-color: rgb(255, 255, 255) !important;
+    color: rgb(69, 0, 90) !important;
+    overflow-x: hidden;
+}
+.tab-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    position: relative; /* Keeps content aligned */
+    top: 0; /* Ensures no offset */
+}
+.tab-pane {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.nav-pills .nav-link {
+    background-color: rgb(208, 173, 248); /* Matches body background */
+    color: rgb(55, 0, 73) !important;
+    border: 1px solid rgb(55, 0, 73) ;
+    transition: background-color 0.3s, color 0.3s;
+    font-family: 'Times New Roman', Times, serif !important;
+}
+
+.nav-pills .nav-link.active {
+    background-color: rgb(189, 135, 250) !important; 
+    color: white !important; /* White text for better contrast */
+    border: 1px solid rgb(55, 0, 73);
+}
+
+.table {
+    margin-top: 20px;
+    background-color: rgb(208, 173, 248) !important;
+}
+
+.table th {
+    background-color: rgb(55, 0, 73) !important;
+    color: white;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.table td, .table th {
+    border: 1px solid rgb(55, 0, 73) !important;
+}
+.btn-custom {
+    background-color: rgb(189, 135, 250) !important;
+    border: rgb(55, 0, 73) !important;
+}
+.btn-custom {
+    background-color: rgb(189, 135, 250) !important;
+    border: rgb(55, 0, 73) !important;
+}
